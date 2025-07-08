@@ -38,12 +38,3 @@ class Matricula(models.Model):
     curso = models.ForeignKey(Curso, on_delete=models.CASCADE)
     periodo = models.CharField(max_length = 100, choices = PERIODO, blank = False, null = False, default = 'M')
 
-'''Id
-Relacionar com o modelo Estudante
-Se o Estudante for deletado, todas as matrículas daquele estudante devem ser deletadas
-Relacionar com o modelo Curso
-Se o Curso for deletado, todas as matriculas daquele curso devem ser deletadas
-Período (Matutino, Vespertino, Noturno)
-Não pode estar em Branco
-Não pode ser Nulo
-Por padrão deve ser Matutino'''
