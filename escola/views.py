@@ -4,32 +4,27 @@ from rest_framework import viewsets, generics
 from rest_framework.authentication import BasicAuthentication
 from rest_framework.permissions import IsAuthenticated
 
-
-class EstudanteViewSet(viewsets.ModelViewSet):
+class AuthenticatedMaster:
     
     authentication_classes = [BasicAuthentication]
     permission_classes = [IsAuthenticated]
+
+class EstudanteViewSet(AuthenticatedMaster, viewsets.ModelViewSet):
+    
     queryset = Estudante.objects.all()
     serializer_class = EstudanteSerializer
     
-class CursoViewSet(viewsets.ModelViewSet):
+class CursoViewSet(AuthenticatedMaster, viewsets.ModelViewSet):
     
-    authentication_classes = [BasicAuthentication]
-    permission_classes = [IsAuthenticated]
     queryset = Curso.objects.all()
     serializer_class = CursoSerializer
 
-class MatriculaViewSet(viewsets.ModelViewSet):
+class MatriculaViewSet(AuthenticatedMaster, viewsets.ModelViewSet):
     
-    authentication_classes = [BasicAuthentication]
-    permission_classes = [IsAuthenticated]
     queryset = Matricula.objects.all()
     serializer_class = MatriculaSerializer
     
-class ListaMatriculasEstudante(generics.ListAPIView):
-
-    authentication_classes = [BasicAuthentication]
-    permission_classes = [IsAuthenticated]
+class ListaMatriculasEstudante(AuthenticatedMaster, generics.ListAPIView):
     
     def get_queryset(self):
         
@@ -38,10 +33,7 @@ class ListaMatriculasEstudante(generics.ListAPIView):
     
     serializer_class = ListaMatriculasEstudanteSerializer
     
-class ListaMatriculasCurso(generics.ListAPIView):
-    
-    authentication_classes = [BasicAuthentication]
-    permission_classes = [IsAuthenticated]
+class ListaMatriculasCurso(AuthenticatedMaster, generics.ListAPIView):
 
     def get_queryset(self):
         
