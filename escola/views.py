@@ -1,30 +1,24 @@
 from escola.models import Estudante, Curso, Matricula
 from escola.serializers import EstudanteSerializer, CursoSerializer, MatriculaSerializer, ListaMatriculasEstudanteSerializer, ListaMatriculasCursoSerializer
 from rest_framework import viewsets, generics
-from rest_framework.authentication import BasicAuthentication
-from rest_framework.permissions import IsAuthenticated
 
-class AuthenticatedMaster:
-    
-    authentication_classes = [BasicAuthentication]
-    permission_classes = [IsAuthenticated]
 
-class EstudanteViewSet(AuthenticatedMaster, viewsets.ModelViewSet):
+class EstudanteViewSet(viewsets.ModelViewSet):
     
     queryset = Estudante.objects.all()
     serializer_class = EstudanteSerializer
     
-class CursoViewSet(AuthenticatedMaster, viewsets.ModelViewSet):
+class CursoViewSet(viewsets.ModelViewSet):
     
     queryset = Curso.objects.all()
     serializer_class = CursoSerializer
 
-class MatriculaViewSet(AuthenticatedMaster, viewsets.ModelViewSet):
+class MatriculaViewSet(viewsets.ModelViewSet):
     
     queryset = Matricula.objects.all()
     serializer_class = MatriculaSerializer
     
-class ListaMatriculasEstudante(AuthenticatedMaster, generics.ListAPIView):
+class ListaMatriculasEstudante(generics.ListAPIView):
     
     def get_queryset(self):
         
@@ -33,7 +27,7 @@ class ListaMatriculasEstudante(AuthenticatedMaster, generics.ListAPIView):
     
     serializer_class = ListaMatriculasEstudanteSerializer
     
-class ListaMatriculasCurso(AuthenticatedMaster, generics.ListAPIView):
+class ListaMatriculasCurso(generics.ListAPIView):
 
     def get_queryset(self):
         
