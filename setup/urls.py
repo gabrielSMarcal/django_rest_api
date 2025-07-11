@@ -1,7 +1,8 @@
 from django.contrib import admin
 from django.urls import path, include
-from escola.views import EstudanteViewSet, CursoViewSet, MatriculaViewSet, ListaMatriculasEstudante, ListaMatriculasCurso
 from rest_framework import routers
+
+from escola.views import EstudanteViewSet, CursoViewSet, MatriculaViewSet, ListaMatriculasEstudante, ListaMatriculasCurso
 
 router = routers.DefaultRouter()
 router.register(r'estudantes', EstudanteViewSet, basename='Estudantes')
