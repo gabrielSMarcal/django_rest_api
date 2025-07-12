@@ -20,7 +20,8 @@ class EstudanteSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError({'nome':'O nome deve conter apenas letras.'})
         
         if celular_invalido(dados['celular']):
-            raise serializers.ValidationError({'celular':'O celular deve seguir o modelo: 86 99999-9999 (respeitando traços e espaços).'})
+            raise serializers.ValidationError({
+                'celular':'O celular deve seguir o modelo: 86 99999-9999 (respeitando traços e espaços).'})
         
         return dados
     
@@ -60,4 +61,11 @@ class ListaMatriculasCursoSerializer(serializers.ModelSerializer):
         
         model = Matricula
         fields = ['estudante_nome']
+        
+class EstudanteSerializerV2(serializers.ModelSerializer):
+    
+    class Meta:
+        
+        model = Estudante
+        fields = ['id', 'nome', 'email', 'celular']
         
