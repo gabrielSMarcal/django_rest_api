@@ -15,7 +15,7 @@ class EstudanteViewSet(viewsets.ModelViewSet):
     
     def get_serializer_class(self):
         
-        if self.request.version == 'V2':
+        if self.request.version == 'v2':
             return EstudanteSerializerV2
         return EstudanteSerializer
     
