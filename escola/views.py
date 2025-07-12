@@ -6,7 +6,7 @@ from escola.serializers import EstudanteSerializer, CursoSerializer, MatriculaSe
 
 class EstudanteViewSet(viewsets.ModelViewSet):
     
-    queryset = Estudante.objects.all()
+    queryset = Estudante.objects.all().order_by('nome')
     serializer_class = EstudanteSerializer
     
 class CursoViewSet(viewsets.ModelViewSet):
