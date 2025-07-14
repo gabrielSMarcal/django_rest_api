@@ -9,26 +9,22 @@ from escola.throttles import MatriculaAnonRateThrottle
 
 class EstudanteViewSet(viewsets.ModelViewSet):
     """
-    ViewSet para gerenciamento de Estudantes.
+    Descrição da ViewSet:
+    - Endpoint para CRUD de estudantes.
 
-    Funcionalidades:
-    - Permite criar, listar, recuperar, atualizar e deletar estudantes (CRUD).
-    - Suporta busca e ordenação pelos campos 'nome' e 'cpf'.
-    - Seleciona automaticamente o serializer conforme a versão da API requisitada.
+    Campos de ordenação:
+    - nome: permite ordenar os resultados por nome.
 
-    Parâmetros de busca e ordenação:
-    - nome (str): Nome do estudante.
-    - cpf (str): CPF do estudante.
+    Campos de pesquisa:
+    - nome: permite pesquisar os resultados por nome.
+    - cpf: permite pesquisar os resultados por CPF.
 
-    Versão da API:
-    - v1: Utiliza EstudanteSerializer.
-    - v2: Utiliza EstudanteSerializerV2.
-
-    Métodos permitidos:
+    Métodos HTTP Permitidos:
     - GET, POST, PUT, PATCH, DELETE
 
-    Observações:
-    - Utiliza filtros do DjangoFilterBackend, OrderingFilter e SearchFilter.
+    Classe de Serializer:
+    - EstudanteSerializer: usado para serialização e desserialização de dados.
+    - Se a versão da API for 'v2', usa EstudanteSerializerV2.
     """
     queryset = Estudante.objects.all().order_by('id')
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter, filters.SearchFilter]
@@ -39,57 +35,38 @@ class EstudanteViewSet(viewsets.ModelViewSet):
         if self.request.version == 'v2':
             return EstudanteSerializerV2
         return EstudanteSerializer
-
+    
 class CursoViewSet(viewsets.ModelViewSet):
-    
-    '''
-    ViewSet para gerenciamento de Cursos.
+    """
+    Descrição da ViewSet:
+    - Endpoint para CRUD de cursos.
 
-    Funcionalidades:
-    - Permite criar, listar, recuperar, atualizar e deletar cursos (CRUD).
-
-    Parâmetros:
-    - id (int): Identificador primário do curso.
-
-    Métodos permitidos:
+    Métodos HTTP Permitidos:
     - GET, POST, PUT, PATCH, DELETE
-
-    Observações:
-    - Os cursos são ordenados pelo campo 'id'.
-    '''
-    
+    """
     queryset = Curso.objects.all().order_by('id')
     serializer_class = CursoSerializer
 
+
 class MatriculaViewSet(viewsets.ModelViewSet):
-    
-    '''
-    ViewSet para gerenciamento de Matrículas.
+    """
+    Descrição da ViewSet:
+    - Endpoint para CRUD de matrículas.
 
-    Funcionalidades:
-    - Permite listar todas as matrículas e criar novas matrículas.
+    Métodos HTTP Permitidos:
+    - GET, POST
 
-    Parâmetros:
-    - id (int): Identificador primário da matrícula.
-
-    Métodos permitidos:
-    - GET: Lista todas as matrículas.
-    - POST: Cria uma nova matrícula.
-
-    Observações:
-    - Não permite atualização ou exclusão de matrículas via API.
-    - Aplica limitação de requisições por usuário autenticado e anônimo (throttling).
-    - Matrículas são ordenadas pelo campo 'id'.
-    '''
-    
+    Throttle Classes:
+    - MatriculaAnonRateThrottle: limite de taxa para usuários anônimos.
+    - UserRateThrottle: limite de taxa para usuários autenticados.
+    """
     queryset = Matricula.objects.all().order_by('id')
     serializer_class = MatriculaSerializer
     throttle_classes = [UserRateThrottle, MatriculaAnonRateThrottle]
     http_method_names = ['get', 'post']
     
-class ListaMatriculasEstudante(generics.ListAPIView):
-    
-    '''
+class ListaMatriculaEstudante(generics.ListAPIView):
+    """
     API View para listar todas as matrículas de um estudante específico.
 
     Funcionalidades:
@@ -104,18 +81,17 @@ class ListaMatriculasEstudante(generics.ListAPIView):
     Observações:
     - O resultado é ordenado pelo campo 'id' da matrícula.
     - Retorna uma lista detalhada das matrículas do estudante, incluindo informações do curso e do período.
-    '''
-    
-    def get_queryset(self):
-        
-        queryset = Matricula.objects.filter(estudante_id=self.kwargs['pk']).order_by('id')
-        return queryset
-    
+    """
     serializer_class = ListaMatriculasEstudanteSerializer
-    
-class ListaMatriculasCurso(generics.ListAPIView):
-    
-    '''
+
+    def get_queryset(self):
+        # Evita erro durante a geração do schema
+        if getattr(self, 'swagger_fake_view', False):
+            return Matricula.objects.none()
+        return Matricula.objects.filter(estudante_id=self.kwargs['pk']).order_by('id')
+
+class ListaMatriculaCurso(generics.ListAPIView):
+    """
     API View para listar todas as matrículas de um curso específico.
 
     Funcionalidades:
@@ -130,11 +106,11 @@ class ListaMatriculasCurso(generics.ListAPIView):
     Observações:
     - O resultado é ordenado pelo campo 'id' da matrícula.
     - Retorna uma lista detalhada dos estudantes matriculados no curso, incluindo informações do estudante e do período.
-    '''
+    """
+    serializer_class = ListaMatriculasCursoSerializer
 
     def get_queryset(self):
-        
-        queryset = Matricula.objects.filter(curso_id=self.kwargs['pk']).order_by('id')
-        return queryset
-    
-    serializer_class = ListaMatriculasCursoSerializer
+        # Evita erro durante a geração do schema
+        if getattr(self, 'swagger_fake_view', False):
+            return Matricula.objects.none()
+        return Matricula.objects.filter(curso_id=self.kwargs['pk']).order_by('id')
