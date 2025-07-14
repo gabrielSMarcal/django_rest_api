@@ -90,11 +90,20 @@ class MatriculaViewSet(viewsets.ModelViewSet):
 class ListaMatriculasEstudante(generics.ListAPIView):
     
     '''
-    Descrição da View:
-    - Lista Matriculas por id de Estudante
-    
-    Parâmetros:
-    - pk (int): O identificador primário do objeto. Deve ser um número inteiro.
+    API View para listar todas as matrículas de um estudante específico.
+
+    Funcionalidades:
+    - Retorna todas as matrículas associadas ao estudante identificado pelo parâmetro 'pk'.
+
+    Parâmetros de URL:
+    - pk (int): Identificador primário do estudante cujas matrículas serão listadas.
+
+    Métodos permitidos:
+    - GET
+
+    Observações:
+    - O resultado é ordenado pelo campo 'id' da matrícula.
+    - Retorna uma lista detalhada das matrículas do estudante, incluindo informações do curso e do período.
     '''
     
     def get_queryset(self):
@@ -107,11 +116,20 @@ class ListaMatriculasEstudante(generics.ListAPIView):
 class ListaMatriculasCurso(generics.ListAPIView):
     
     '''
-    Descrição da View:
-    - Lista Matriculas por id de Curso
-    
-    Parâmetros:
-    - pk (int): O identificador primário do objeto. Deve ser um número inteiro.
+    API View para listar todas as matrículas de um curso específico.
+
+    Funcionalidades:
+    - Retorna todas as matrículas associadas ao curso identificado pelo parâmetro 'pk'.
+
+    Parâmetros de URL:
+    - pk (int): Identificador primário do curso cujas matrículas serão listadas.
+
+    Métodos permitidos:
+    - GET
+
+    Observações:
+    - O resultado é ordenado pelo campo 'id' da matrícula.
+    - Retorna uma lista detalhada dos estudantes matriculados no curso, incluindo informações do estudante e do período.
     '''
 
     def get_queryset(self):
