@@ -41,7 +41,8 @@ class EstudanteViewSet(viewsets.ModelViewSet):
         return EstudanteSerializer
 
 class CursoViewSet(viewsets.ModelViewSet):
-    """
+    
+    '''
     ViewSet para gerenciamento de Cursos.
 
     Funcionalidades:
@@ -55,12 +56,14 @@ class CursoViewSet(viewsets.ModelViewSet):
 
     Observações:
     - Os cursos são ordenados pelo campo 'id'.
-    """
+    '''
+    
     queryset = Curso.objects.all().order_by('id')
     serializer_class = CursoSerializer
 
 class MatriculaViewSet(viewsets.ModelViewSet):
-    """
+    
+    '''
     ViewSet para gerenciamento de Matrículas.
 
     Funcionalidades:
@@ -77,7 +80,8 @@ class MatriculaViewSet(viewsets.ModelViewSet):
     - Não permite atualização ou exclusão de matrículas via API.
     - Aplica limitação de requisições por usuário autenticado e anônimo (throttling).
     - Matrículas são ordenadas pelo campo 'id'.
-    """
+    '''
+    
     queryset = Matricula.objects.all().order_by('id')
     serializer_class = MatriculaSerializer
     throttle_classes = [UserRateThrottle, MatriculaAnonRateThrottle]
@@ -88,6 +92,7 @@ class ListaMatriculasEstudante(generics.ListAPIView):
     '''
     Descrição da View:
     - Lista Matriculas por id de Estudante
+    
     Parâmetros:
     - pk (int): O identificador primário do objeto. Deve ser um número inteiro.
     '''
@@ -104,6 +109,7 @@ class ListaMatriculasCurso(generics.ListAPIView):
     '''
     Descrição da View:
     - Lista Matriculas por id de Curso
+    
     Parâmetros:
     - pk (int): O identificador primário do objeto. Deve ser um número inteiro.
     '''
