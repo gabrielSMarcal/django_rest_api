@@ -1,5 +1,7 @@
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
+from django.urls import reverse
+from rest_framework import status
 from rest_framework.test import APITestCase
 
 
@@ -11,6 +13,7 @@ class AuthenticationUserTests(APITestCase):
             username='admin',
             password='admin'
         )
+        self.url = reverse('Estudantes-list')
         
     def test_autenticacao_com_credenciais_validas(self):
         
@@ -45,4 +48,21 @@ class AuthenticationUserTests(APITestCase):
         
         self.assertFalse((usuario is not None) and usuario.is_authenticated)
         
-    
+    def test_requisicao_get_autorizada(self):
+        
+        """Testa a requisição GET autorizada."""
+
+        self.client.force_authenticate(self.usuario)
+        response = self.client.get(self.url)
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+    def test_requisicao_get_nao_autorizada(self):
+        
+        """Testa a requisição GET não autorizada."""
+        
+        response = self.client.get(self.url)
+        
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+        
+        
