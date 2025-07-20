@@ -53,7 +53,7 @@ class ModelMatriculaTestCase(TestCase):
         self.estudante = Estudante.objects.create(
             nome='Estudante Teste',
             email='estudante@teste.com',
-            cpf='12345678901',
+            cpf='71427904073',
             data_nascimento='2000-01-01',
             celular='11 98765-4321'
         )
