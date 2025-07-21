@@ -64,10 +64,29 @@ class MatriculasUserTests(APITestCase):
         """Teste de requisição POST para criar uma matrícula"""
         
         dados = {
-            'estudante': self.estudante1.id,
-            'curso': self.curso1.id,
+            'estudante': self.estudante1.pk,
+            'curso': self.curso1.pk,
             'periodo': 'M'
         }
         
-        response = self.client.post(self.url, dados)
+        response = self.client.post(self.url, data=dados)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        
+    def test_requisicao_delete_para_deletar_uma_matricula(self):
+        
+        """Teste de requisição DELETE para deletar uma matrícula"""
+        
+        response = self.client.delete(f'{self.url}2/')
+        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+        
+    def test_requisicao_put_para_atualizar_uma_matricula(self):
+        
+        """Teste de requisição PUT para atualizar uma matrícula"""
+        
+        dados = {
+            'estudante': self.estudante2.pk,
+            'curso': self.curso2.pk,
+            'periodo': 'V'
+        }
+        response = self.client.put(f'{self.url}2/', data=dados)
+        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
