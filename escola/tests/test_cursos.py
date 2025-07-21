@@ -1,4 +1,3 @@
-
 from django.contrib.auth.models import User
 from django.urls import reverse
 from rest_framework import status
@@ -10,26 +9,16 @@ from escola.serializers import CursoSerializer
 
 class CursosUserTests(APITestCase):
     
+    fixtures = ['prototipo_banco.json']
+    
     def setUp(self):
         
-        self.usuario = User.objects.create_superuser(
-            username='admin',
-            password='admin'
-        )
+        self.usuario = User.objects.get(pk=1)
         self.url = reverse('Cursos-list')
         self.client.force_authenticate(user=self.usuario)
         
-        self.curso1 = Curso.objects.create(
-            codigo = 'CURSO001',
-            descricao = 'Curso de Teste UM',
-            nivel = 'B'
-        )
-        
-        self.curso2 = Curso.objects.create(
-            codigo = 'CURSO002',
-            descricao = 'Curso de Teste DOIS',
-            nivel = 'I'
-        )
+        self.curso1 = Curso.objects.get(pk=1)
+        self.curso2 = Curso.objects.get(pk=2)
         
     def test_requisicao_get_para_listar_cursos(self):
         
