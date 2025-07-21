@@ -56,7 +56,7 @@ class EstudantesUserTests(APITestCase):
         """Teste de requisição POST para criar um estudante"""
 
         dados = {
-            'nome': 'Teste novo',
+            'nome': 'Teste',
             'email': 'teste@gmail.com',
             'cpf': '38312389016',
             'data_nascimento': '2000-01-01',

@@ -5,6 +5,7 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 
 from escola.models import Curso
+from escola.serializers import CursoSerializer
 
 
 class CursosUserTests(APITestCase):
@@ -37,3 +38,26 @@ class CursosUserTests(APITestCase):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         
+    def test_requisicao_get_para_listar_um_curso(self):
+        
+        """Teste de requisição GET para listar um curso"""
+        
+        response = self.client.get(self.url + '1/')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        dados_curso = Curso.objects.get(pk=1)
+        dados_curso_serializado = CursoSerializer(instance=dados_curso).data
+        self.assertEqual(response.data, dados_curso_serializado)
+        
+    
+    def test_requisicao_post_para_criar_um_curso(self):
+        
+        """Teste de requisição POST para criar um curso"""
+        
+        dados = {
+            'codigo': 'CURSO003',
+            'descricao': 'Curso de Teste TRÊS',
+            'nivel': 'A'
+        }
+        
+        response = self.client.post(self.url, dados)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
