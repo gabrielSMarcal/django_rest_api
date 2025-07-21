@@ -17,22 +17,39 @@ class MatriculasUserTests(APITestCase):
         self.url = reverse('Matriculas-list')
         self.client.force_authenticate(user=self.usuario)
         
-        self.estudante = Estudante.objects.create(
+        self.estudante1 = Estudante.objects.create(
             nome = 'Estudante Teste',
             email = 'teste@example.com',
             cpf = '42070997006',
             data_nascimento = '2000-01-01',
             celular = '11 99999-9999'
         )
-        self.curso = Curso.objects.create(
+        self.estudante2 = Estudante.objects.create(
+            nome = 'Estudante Teste 2',
+            email = 'teste2@example.com',
+            cpf = '53345749050',
+            data_nascimento = '2000-01-02',
+            celular = '11 99999-9998'
+        )
+        self.curso1 = Curso.objects.create(
             codigo = 'CURSO001',
             descricao = 'Curso de Teste UM',
             nivel = 'B'
         )
-        self.matricula = Matricula.objects.create(
-            estudante=self.estudante,
-            curso=self.curso,
+        self.curso2 = Curso.objects.create(
+            codigo = 'CURSO002',
+            descricao = 'Curso de Teste DOIS',
+            nivel = 'I'
+        )
+        self.matricula1 = Matricula.objects.create(
+            estudante=self.estudante1,
+            curso=self.curso1,
             periodo = 'M'
+        )
+        self.matricula2 = Matricula.objects.create(
+            estudante=self.estudante2,
+            curso=self.curso2,
+            periodo = 'V'
         )
         
     def test_requisicao_get_para_listar_matriculas(self):

@@ -5,6 +5,7 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 
 from escola.models import Estudante
+from escola.serializers import EstudanteSerializer
 
 
 class EstudantesUserTests(APITestCase):
@@ -39,3 +40,27 @@ class EstudantesUserTests(APITestCase):
         
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_requisicao_get_para_listar_um_estudante(self):
+
+        """Teste de requisição GET para listar um estudante"""
+
+        response = self.client.get(self.url + '1/')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        dados_estudante = Estudante.objects.get(pk=1)
+        dados_estudante_serializado = EstudanteSerializer(instance=dados_estudante).data
+        self.assertEqual(response.data, dados_estudante_serializado)
+        
+    def test_requisicao_post_para_criar_um_estutande(self):
+
+        """Teste de requisição POST para criar um estudante"""
+
+        dados = {
+            'nome': 'Teste novo',
+            'email': 'teste@gmail.com',
+            'cpf': '38312389016',
+            'data_nascimento': '2000-01-01',
+            'celular': '11 99999-9999'
+        }
+        response = self.client.post(self.url, dados)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
